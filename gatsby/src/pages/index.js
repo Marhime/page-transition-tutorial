@@ -56,29 +56,29 @@ const productsDb = [
 
 const content = (isFirstMount) => ({
   animate: {
-    transition: { staggerChildren: 0.1, delayChildren: isFirstMount ? 2.8 : 0 },
+    transition: { staggerChildren: 0.2, delayChildren: isFirstMount ? 5 : 0 },
   },
 });
 
 const title = {
-  initial: { y: -20, opacity: 0 },
+  initial: { y: 20, opacity: 0 },
   animate: {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.7,
+      duration: 1,
       ease: [0.6, -0.05, 0.01, 0.99],
     },
   },
 };
 
 const products = {
-  initial: { y: -20, opacity: 0 },
+  initial: { y: 20, opacity: 0 },
   animate: {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.7,
+      duration: 1,
       ease: [0.6, -0.05, 0.01, 0.99],
     },
   },
@@ -144,12 +144,26 @@ const Product = ({ img, category, name, price }) => (
 const blackBox = {
   initial: {
     height: "100%",
-    bottom: 0,
+    top: 0,
   },
   animate: {
     height: 0,
     transition: {
       when: "afterChildren",
+      duration: 1.5,
+      ease: [0.87, 0, 0.13, 1],
+    },
+  },
+};
+const whiteBox = {
+  initial: {
+    height: "100%",
+    top: 0,
+  },
+  animate: {
+    height: 0,
+    transition: {
+      delay: 3.5,
       duration: 1.5,
       ease: [0.87, 0, 0.13, 1],
     },
@@ -176,7 +190,7 @@ const text = {
   animate: {
     y: 80,
     transition: {
-      duration: 1.5,
+      duration: 3,
       ease: [0.87, 0, 0.13, 1],
     },
   },
@@ -189,40 +203,52 @@ const InitialTransition = () => {
   }, []);
 
   return (
-    <motion.div
-      className="absolute z-50 flex items-center justify-center w-full bg-black"
+    <>
+     <motion.div
+        className="absolute z-50 flex items-center justify-center w-full bg-white"
+        initial="initial"
+        animate="animate"
+        variants={blackBox}
+        // onAnimationStart={() => document.body.classList.add("overflow-hidden")}
+        // onAnimationComplete={() =>
+        //   document.body.classList.remove("overflow-hidden")
+        // }
+      >
+        <motion.svg variants={textContainer} className="absolute z-50 flex">
+          <pattern
+            id="pattern"
+            patternUnits="userSpaceOnUse"
+            width={750}
+            height={800}
+            className="text-black"
+          >
+            <rect className="w-full h-full fill-current" />
+            <motion.rect
+              variants={text}
+              className="w-full h-full text-white fill-current"
+            />
+          </pattern>
+          <text
+            className="text-4xl font-bold"
+            textAnchor="middle"
+            x="50%"
+            y="50%"
+            style={{ fill: "url(#pattern)" }}
+          >
+            marhime
+          </text>
+        </motion.svg>
+      </motion.div>
+      <motion.div
+      className="absolute z-10 flex items-center justify-center w-full bg-black"
       initial="initial"
       animate="animate"
-      variants={blackBox}
-      onAnimationStart={() => document.body.classList.add("overflow-hidden")}
-      onAnimationComplete={() =>
-        document.body.classList.remove("overflow-hidden")
-      }
-    >
-      <motion.svg variants={textContainer} className="absolute z-50 flex">
-        <pattern
-          id="pattern"
-          patternUnits="userSpaceOnUse"
-          width={750}
-          height={800}
-          className="text-white"
-        >
-          <rect className="w-full h-full fill-current" />
-          <motion.rect
-            variants={text}
-            className="w-full h-full text-gray-600 fill-current"
-          />
-        </pattern>
-        <text
-          className="text-4xl font-bold"
-          textAnchor="middle"
-          x="50%"
-          y="50%"
-          style={{ fill: "url(#pattern)" }}
-        >
-          tailstore
-        </text>
-      </motion.svg>
-    </motion.div>
+      variants={whiteBox}
+      // onAnimationStart={() => document.body.classList.add("overflow-hidden")}
+      // onAnimationComplete={() =>
+      //   document.body.classList.remove("overflow-hidden")
+      // }
+    ></motion.div>
+  </>
   );
 };
